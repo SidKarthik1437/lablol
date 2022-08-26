@@ -1,0 +1,846 @@
+1.
+a)mean
+from numpy import nan
+from numpy import isnan
+import pandas as pd
+from sklearn.impute import SimpleImputer
+
+dataset = pd.read_csv('pima-indians-diabetes.csv',header=None)
+
+print('Missing values before imputation : ',dataset.isnull().sum())
+
+values = dataset.values
+print('
+Values before imputation:
+', values)
+
+imputer = SimpleImputer(missing_values=nan, strategy='mean')
+
+transformed_values = imputer.fit_transform(values)
+print('
+Values after imputation:
+', transformed_values)
+
+print('
+Missing values after imputation:', isnan(transformed_values).sum())
+
+
+b)median
+from numpy import nan
+from numpy import isnan
+import pandas as pd
+from sklearn.impute import SimpleImputer
+
+dataset = pd.read_csv('pima-indians-diabetes.csv', header=None)
+
+print('Missing values before imputation:', dataset.isnull().sum())
+
+values = dataset.values
+print('
+Values before imputation:
+', values)
+
+imputer = SimpleImputer(missing_values=nan, strategy='median')
+
+transformed_values = imputer.fit_transform(values)
+print('
+Values after imputation:
+', transformed_values)
+
+print('
+Missing values after imputation:', isnan(transformed_values).sum())
+
+
+c)mode
+from numpy import nan
+from numpy import isnan
+import pandas as pd
+from sklearn.impute import SimpleImputer
+
+dataset = pd.read_csv('pima-indians-diabetes.csv', header=None)
+
+print('Missing values before imputation:', dataset.isnull().sum())
+
+values = dataset.values
+print('
+Values before imputation:
+', values)
+
+imputer = SimpleImputer(missing_values=nan, strategy='most_frequent')
+
+transformed_values = imputer.fit_transform(values)
+print('
+Values after imputation:
+', transformed_values)
+
+print('
+Missing values after imputation:', isnan(transformed_values).sum())
+
+
+d)constant
+from numpy import nan
+from numpy import isnan
+import pandas as pd
+from sklearn.impute import SimpleImputer
+
+dataset = pd.read_csv('pima-indians-diabetes.csv', header=None)
+
+print('Missing values before imputation:', dataset.isnull().sum())
+
+values = dataset.values
+print('
+Values before imputation:
+', values)
+
+imputer = SimpleImputer(missing_values=nan, strategy='constant')
+
+transformed_values = imputer.fit_transform(values)
+print('
+Values after imputation:
+', transformed_values)
+
+print('
+Missing values after imputation:', isnan(transformed_values).sum())
+
+    
+2.
+
+    import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.arange(0,20,2)
+y1 = np.array([2, 103, 8, -90 , 0 , -6 ,15, 66, 0, 92])
+y2 = np.array([204, -3, -6, 4, 32, 0, 12, 540, 10, 10])
+
+plt.plot(x,y1,'red')
+plt.plot(x,y2,'blue');
+
+
+a)absolute maximum scaling
+y1_new = y1/max(y1)
+y2_new = y2/max(y2)
+
+plt.plot(x,y1_new,'red')
+plt.plot(x,y2_new,'blue');
+
+
+b)min max scaling
+y1_new = (y1-min(y1))/(max(y1)-min(y1))
+y2_new = (y2-min(y2))/(max(y2)-min(y2))
+
+plt.plot(x,y1_new,'red')
+plt.plot(x,y2_new,'blue');
+
+
+c)normalization
+y1_new = (y1-np.mean(y1))/(max(y1)-min(y1))
+y2_new = (y2-np.mean(y2))/(max(y2)-min(y2))
+
+plt.plot(x,y1_new,'red')
+plt.plot(x,y2_new,'blue');
+
+
+d)standardization
+# Scaling the data
+y1_new = (y1-np.mean(y1))/np.std(y1)
+y2_new = (y2-np.mean(y2))/np.std(y2)
+
+plt.plot(x,y1_new,'red')
+plt.plot(x,y2_new,'blue'); 
+    
+3.
+
+a)positive numbers only
+import statistics
+import pandas as pd
+
+def minMaxNor(num,list):
+ minNum=int(input("Enter New Minimum Value:"))
+ maxNum = int(input("Enter New Maximum Value:"))
+ ans=round(((num-min(list))/(max(list)-min(list))*(maxNum-minNum))+minNum,2)
+ return ans
+
+def zNor (num,mean,stdDv):
+ return round((num-mean)/stdDv,2)
+
+def zNorMAD (num,mean,abMeanDiv):
+ return round((num-mean)/abMeanDiv,2)
+
+def decNor(num,maxNum):
+ digit=len(str(maxNum))
+ div=pow(10,digit)
+ return num/div
+
+data=[200, 300, 400, 600, 1000]
+
+num=int(input("
+Enter an item from data :"))
+print("
+After doing min-max normalization :",minMaxNor(num,data))
+print("
+After doing z-score normalization using SD:", zNor(num,statistics.mean(data),statistics.stdev(data)))
+df = pd.DataFrame(data)
+print("
+After doing z-score normalization using MAD:", zNorMAD(num,statistics.mean(data),df.mad()))
+print("
+After doing decimal scaling normalization :", decNor(num,max(data)))
+
+
+b)negative numbers only
+import statistics
+import pandas as pd
+
+def minMaxNor(num,list):
+ minNum=int(input("Enter New Minimum Value:"))
+ maxNum = int(input("Enter New Maximum Value:"))
+ ans=round(((num-min(list))/(max(list)-min(list))*(maxNum-minNum))+minNum,2)
+ return ans
+
+def zNor (num,mean,stdDv):
+ return round((num-mean)/stdDv,2)
+
+def zNorMAD (num,mean,abMeanDiv):
+ return round((num-mean)/abMeanDiv,2)
+
+def decNor(num,maxNum):
+ digit=len(str(maxNum))
+ div=pow(10,digit)
+ return num/div
+
+data=[-200, -300, -400, -600, -1000]
+
+num=int(input("
+Enter an item from data :"))
+print("
+After doing min-max normalization :",minMaxNor(num,data))
+print("
+After doing z-score normalization using SD:", zNor(num,statistics.mean(data),statistics.stdev(data)))
+df = pd.DataFrame(data)
+print("
+After doing z-score normalization using MAD:", zNorMAD(num,statistics.mean(data),df.mad()))
+print("
+After doing decimal scaling normalization :", decNor(num,max(data)))
+
+
+c)both positive and negative numbers
+import statistics
+import pandas as pd
+
+def minMaxNor(num,list):
+ minNum=int(input("Enter New Minimum Value:"))
+ maxNum = int(input("Enter New Maximum Value:"))
+ ans=round(((num-min(list))/(max(list)-min(list))*(maxNum-minNum))+minNum,2)
+ return ans
+
+def zNor (num,mean,stdDv):
+ return round((num-mean)/stdDv,2)
+
+def zNorMAD (num,mean,abMeanDiv):
+ return round((num-mean)/abMeanDiv,2)
+
+def decNor(num,maxNum):
+ digit=len(str(maxNum))
+ div=pow(10,digit)
+ return num/div
+
+data=[-200, -300, 400, -600, 1000]
+
+num=int(input("
+Enter an item from data :"))
+print("
+After doing min-max normalization :",minMaxNor(num,data))
+print("
+After doing z-score normalization using SD:", zNor(num,statistics.mean(data),statistics.stdev(data)))
+df = pd.DataFrame(data)
+print("
+After doing z-score normalization using MAD:", zNorMAD(num,statistics.mean(data),df.mad()))
+print("
+After doing decimal scaling normalization :", decNor(num,max(data)))
+
+
+4.
+
+    import numpy as np
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    df = pd.read_csv('INSURANCE_OUTLIER.csv')
+
+    df.head()
+
+    df.shape
+
+    df.info()
+
+    df.boxplot(figsize=(7,5));
+
+
+    a)upper outliers
+    sns.boxplot(df['bmi']); 
+    plt.title('bmi before outlier removal')
+
+    sorted(df['bmi']); 
+    xsmall=df['bmi'].min()
+    q1,q3=np.percentile(df['bmi'],[25,75])
+    xlarge=df['bmi'].max()
+
+    print('
+Minimum value:',xsmall)
+print('
+First quartile value:',q1)
+print('
+Third quartile value:',q3)
+print('
+Maximum value:',xlarge)
+
+iqr=q3-q1 
+print('
+Inter-quartile range:',iqr)
+
+lb=q1-(1.5*iqr) 
+ub=q3+(1.5*iqr) 
+print('
+Lower bound value:',lb)
+print('
+Upper bound value:',ub)
+
+if xsmall < lb or xlarge > ub:
+ print(f'
+Outliers are present in bmi attribute')
+else:
+ print(f'
+Outliers are not present in bmi attribute')
+
+df1 = df[df['bmi'] < ub]
+df1
+
+sns.boxplot(df1['bmi']);
+plt.title('bmi after outlier removal');
+
+
+b)lower outliers
+sns.boxplot(df['children']); 
+plt.title('children before outlier removal')
+
+sorted(df['children'])
+xsmall=df['children'].min()
+q1,q3=np.percentile(df['children'],[25,75])
+xlarge=df['children'].max() 
+
+print('
+Minimum value:',xsmall)
+print('
+First quartile value:',q1)
+print('
+Third quartile value:',q3)
+print('
+Maximum value:',xlarge)
+
+iqr=q3-q1 
+print('
+Inter-quartile range:',iqr)
+
+lb=q1-(1.5*iqr) 
+ub=q3+(1.5*iqr)
+print('
+Lower bound value:',lb)
+print('
+Upper bound value:',ub)
+
+if xsmall < lb or xlarge > ub:
+ print(f'
+Outliers are present in children attribute')
+else:
+ print(f'
+Outliers are not present in children attribute')
+
+df2 = df[df['children'] > lb]
+df2
+
+sns.boxplot(df2['children'])
+plt.title('children after outlier removal');
+
+5.
+
+    import numpy as np 
+    import pandas as pd 
+
+    import seaborn as sns 
+    import matplotlib.pyplot as plt     
+
+    from sklearn.model_selection import train_test_split
+
+    from sklearn import preprocessing 
+    from scipy.stats import zscore
+
+    from sklearn.linear_model import LinearRegression
+    from sklearn.linear_model import Ridge
+    from sklearn.linear_model import Lasso 
+
+    from sklearn import metrics 
+    from sklearn.metrics import mean_squared_error
+    from sklearn.metrics import mean_absolute_error
+
+    df = pd.read_csv('concrete.csv')
+
+    df.shape
+
+    df.head()
+
+    df.dtypes
+
+    df.info()
+
+    df.isnull().values.any()    
+
+    X = df.drop( ['strength'] , axis=1)
+
+    y = df['strength']
+
+    XScaled=X.apply(zscore)
+XScaled.head()
+
+X_train, X_test, y_train, y_test = train_test_split(XScaled, y, test_size=0.30, random_state=1) 
+
+print('X training data size: {}'.format(X_train.shape))
+print('y training data size: {}'.format(y_train.shape))
+print('X testing data size: {}'.format(X_test.shape))
+print('y testing data size: {}'.format(y_test.shape))
+print("{0:0.2f}% of data is in training set".format((len(X_train)/len(df.index)) * 100))
+print("{0:0.2f}% of data is in test set".format((len(X_test)/len(df.index)) * 100))
+
+
+a)Linear Regression
+lr = LinearRegression()
+lr.fit(X_train, y_train) 
+y_pred = lr.predict(X_test)
+
+print("Linear Regression model coefficients:", (lr.coef_)) #
+print('
+LR R2_score on training data:',lr.score(X_train, y_train))
+print('LR R2_score on test data:',lr.score(X_test, y_test))
+print('LR Mean Square Error :',mean_squared_error(y_test,y_pred_lr))
+print('LR Root Mean Square Error :',np.sqrt(mean_squared_error(y_test, y_pred_lr)))
+print('LR Mean Absolute Error :',mean_absolute_error(y_test, y_pred_lr))
+
+
+b)Ridge Regression
+ridge = Ridge(alpha=.3)
+ridge.fit(X_train,y_train)
+y_pred_ridge = ridge.predict(X_test) 
+
+print("Ridge model coefficients:", (ridge.coef_)) # Printing the coefficients
+print('
+Ridge R2_score on training data:',ridge.score(X_train, y_train))
+print('Ridge R2_score on test data:',ridge.score(X_test, y_test))
+print('Ridge Mean Square Error :',mean_squared_error(y_test,y_pred_ridge))
+print('Ridge Root Mean Square Error :',np.sqrt(mean_squared_error(y_test, y_pred_ridge)))
+print('Ridge Mean Absolute Error :',mean_absolute_error(y_test, y_pred_ridge))
+
+
+c)Lasso Regression
+lasso = Lasso(alpha=0.1)
+lasso.fit(X_train,y_train) 
+y_pred_lasso = lasso.predict(X_test)
+
+print("Lasso model coefficients:", (lasso.coef_)) 
+print('
+Lasso R2_score on training data:',lasso.score(X_train, y_train))
+print('Lasso R2_score on test data:',lasso.score(X_test, y_test))
+print('Lasso Mean Square Error :',mean_squared_error(y_test,y_pred_lasso))
+print('Lasso Root Mean Square Error :',np.sqrt(mean_squared_error(y_test, y_pred_lasso)))
+print('Lasso Mean Absolute Error :',mean_absolute_error(y_test, y_pred_lasso))
+
+fig, (ax1, ax2, ax3) = plt.subplots(1,3, figsize=(15,4))
+
+ax1.scatter(y_pred_lr, y_test, s=20)
+ax1.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--')
+ax1.set_ylabel("True")
+ax1.set_xlabel("Predicted")
+ax1.set_title("Linear Regression")
+
+ax2.scatter(y_pred_ridge, y_test, s=20)
+ax2.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--')
+ax2.set_ylabel("True")
+ax2.set_xlabel("Predicted")
+ax2.set_title("Ridge Regression")
+
+ax3.scatter(y_pred_lasso, y_test, s=20)
+ax3.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--')
+ax3.set_ylabel("True")
+ax3.set_xlabel("Predicted")
+ax3.set_title("Lasso Regression")
+
+fig.suptitle("True vs Predicted");
+
+6.
+
+    import numpy as np 
+    import pandas as pd 
+    import seaborn as sns   
+    import matplotlib.pyplot as plt
+    %matplotlib inline 
+    from sklearn.model_selection import train_test_split
+    
+    from sklearn import preprocessing
+    from scipy.stats import zscore 
+
+    from sklearn.linear_model import LinearRegression
+    from sklearn.preprocessing import PolynomialFeatures
+    from sklearn.linear_model import ElasticNet
+    from sklearn import metrics 
+    from sklearn.metrics import mean_squared_error 
+    from sklearn.metrics import mean_absolute_error
+
+    df = pd.read_csv('concrete.csv')
+
+    df.shape
+
+    df.head()
+
+    df.dtypes
+
+    df.info()
+
+    df.isnull().values.any()
+
+    X = df.drop( ['strength'] , axis=1)
+
+    y = df['strength']
+
+    XScaled=X.apply(zscore)
+XScaled.head()
+
+X_train, X_test, y_train, y_test = train_test_split(XScaled, y, test_size=0.30, random_state=1)
+
+
+a)elastic net regression
+print('X training data size: {}'.format(X_train.shape))
+print('y training data size: {}'.format(y_train.shape))
+print('X testing data size: {}'.format(X_test.shape))
+print('y testing data size: {}'.format(y_test.shape))
+print("{0:0.2f}% of data is in training set".format((len(X_train)/len(df.index)) * 100))
+print("{0:0.2f}% of data is in test set".format((len(X_test)/len(df.index)) * 100))
+
+en = ElasticNet(alpha=1.0, l1_ratio=0.5)
+en.fit(X_train, y_train) 
+y_pred_en = en.predict(X_test) 
+
+print("Elastic Net Regression model coefficients:", (en.coef_)) 
+print('
+EN R2_score on training data:',en.score(X_train, y_train))
+print('EN R2_score on test data:',en.score(X_test, y_test))
+print('EN Mean Square Error :',mean_squared_error(y_test,y_pred_en))
+print('EN Root Mean Square Error :',np.sqrt(mean_squared_error(y_test, y_pred_en)))
+print('EN Mean Absolute Error :',mean_absolute_error(y_test, y_pred_en))
+    
+
+b)polynomial regression
+poly = PolynomialFeatures(degree = 2, interaction_only=True)
+X_poly = poly.fit_transform(XScaled) 
+
+X_train_poly, X_test_poly, y_train, y_test = train_test_split(X_poly, y, test_size=0.30, random_state=1) 
+
+print('X training data size: {}'.format(X_train_poly.shape))
+print('y training data size: {}'.format(y_train.shape))
+print('X testing data size: {}'.format(X_test_poly.shape))
+print('y testing data size: {}'.format(y_test.shape))
+print("{0:0.2f}% of data is in training set".format((len(X_train_poly)/len(df.index)) * 100))
+print("{0:0.2f}% of data is in test set".format((len(X_test_poly)/len(df.index)) * 100))
+
+lr = LinearRegression()
+lr.fit(X_train_poly, y_train) 
+y_pred_lr = lr.predict(X_test_poly)
+
+print('Linear Regression poly feature model coefficients:',lr.coef_) 
+print('
+LR poly model R2_score on training data:',lr.score(X_train_poly, y_train))
+print('LR poly model R2_score on test data :',lr.score(X_test_poly, y_test))
+print('LR Mean Square Error :',mean_squared_error(y_test,y_pred_lr))
+print('LR Root Mean Square Error :',np.sqrt(mean_squared_error(y_test, y_pred_lr)))
+print('LR Mean Absolute Error :',mean_absolute_error(y_test, y_pred_lr))
+
+7.
+
+    import numpy as np 
+    import pandas as pd 
+    import seaborn as sns 
+import matplotlib.pyplot as plt 
+from sklearn.model_selection import train_test_split 
+from sklearn import model_selection
+from sklearn.linear_model import LogisticRegression 
+from sklearn.model_selection import KFold 
+from sklearn.model_selection import cross_val_score
+from sklearn import metrics 
+from sklearn.metrics import confusion_matrix 
+from sklearn import preprocessing 
+
+df = pd.read_csv('diabetes.csv')
+
+df.shape
+
+df.head()   
+
+df.info()
+
+df.isnull().values.any()
+
+X = df.drop('Outcome',axis=1)
+y = df['Outcome']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
+
+print('X training data size: {}'.format(X_train.shape))
+print('y training data size: {}'.format(y_train.shape))
+print('X testing data size: {}'.format(X_test.shape))
+print('y testing data size: {}'.format(y_test.shape))
+print("{0:0.2f}% of data is in training set".format((len(X_train)/len(df.index)) * 100))
+print("{0:0.2f}% of data is in test set".format((len(X_test)/len(df.index)) * 100))
+
+log_model = LogisticRegression()
+log_model.fit(X_train, y_train)
+log_pred = log_model.predict(X_test)
+
+cm=metrics.confusion_matrix(y_test, log_pred, labels=[1, 0])
+df_cm = pd.DataFrame(cm, index = [i for i in ["Actual 1","Actual 0"]],
+ columns = [i for i in ["Predict 1","Predict 0"]])
+plt.title('
+Logistic Regression Confusion Matrix')
+sns.heatmap(df_cm, annot=True, fmt='g');
+
+TP = cm[0,0]
+FP = cm[0,1]
+FN = cm[1,0]
+TN = cm[1,1]
+
+classification_accuracy = (TP + TN) / float(TP + TN + FP + FN)
+print('
+Classification accuracy: {0:0.4f}'.format(classification_accuracy))
+
+num_folds = 5 
+kfold = KFold(n_splits=num_folds)
+
+model = LogisticRegression()
+results = cross_val_score(model,X,y, cv=kfold)
+print('
+Accuracy of each fold:',results)
+print("
+Accuracy: %.3f%% (%.3f%%)" % (results.mean()*100.0, results.std()*100.0))
+
+
+8.
+
+    import numpy as np 
+    import pandas as pd 
+    import matplotlib.pyplot as plt
+import seaborn as sns 
+from sklearn.model_selection import train_test_split 
+from sklearn.naive_bayes import GaussianNB 
+from sklearn import metrics 
+from sklearn.metrics import confusion_matrix 
+from sklearn import preprocessing
+
+df = pd.read_csv('Bank_Personal_Loan_Modelling_PGM_3.csv')
+
+df.head()
+
+df.shape
+
+df.info()
+
+df.isnull().values.any()
+
+X = df.drop('Personal Loan', axis=1)
+y = df['Personal Loan'] 
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
+
+print('X training data size:', X_train.shape)
+print('y training data size:', y_train.shape)
+print('X testing data size:', X_test.shape)
+print('y testing data size:', y_test.shape)
+print("Data in training set:", (len(X_train)/len(df.index)) * 100)
+print("Data in test set:", (len(X_test)/len(df.index)) * 100)
+
+
+a)unscaled data
+gnb_model = GaussianNB()
+gnb_model.fit(X_train, y_train)
+gnb_pred = gnb_model.predict(X_test)
+cm=metrics.confusion_matrix(y_test, gnb_pred, labels=[1, 0])
+df_cm = pd.DataFrame(cm, index = [i for i in ["Actual 1","Actual 0"]],
+ columns = [i for i in ["Predict 1","Predict 0"]])
+plt.title('Naive Bayes Confusion Matrix without scaling')
+sns.heatmap(df_cm, annot=True, fmt='g');
+TP = cm[0,0]
+FP = cm[0,1]
+FN = cm[1,0]
+TN = cm[1,1]
+classification_accuracy = (TP + TN) / float(TP + TN + FP + FN)
+print('Classification accuracy without scaling: {0:0.4f}'.format(classification_accuracy))
+
+
+b)scaled data
+X_train_scaled = preprocessing.scale(X_train)
+X_test_scaled = preprocessing.scale(X_test)
+scaled_gnb_model = GaussianNB()
+scaled_gnb_model.fit(X_train_scaled, y_train)
+scaled_gnb_pred = scaled_gnb_model.predict(X_test_scaled)
+cm=metrics.confusion_matrix(y_test, scaled_gnb_pred, labels=[1, 0])
+df_cm = pd.DataFrame(cm, index = [i for i in ["Actual 1","Actual 0"]],
+ columns = [i for i in ["Predict 1","Predict 0"]])
+plt.title('Naive Bayes Confusion Matrix after scaling')
+sns.heatmap(df_cm, annot=True, fmt='g');
+TP = cm[0,0]
+FP = cm[0,1]
+FN = cm[1,0]
+TN = cm[1,1]
+classification_accuracy = (TP + TN) / float(TP + TN + FP + FN)
+print('Classification accuracy after scaling: {0:0.4f}'.format(classification_accuracy))
+
+
+9.
+
+
+    import numpy as np 
+    import pandas as pd
+    import seaborn as sns 
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+
+from sklearn import metrics 
+from sklearn.metrics import confusion_matrix 
+from sklearn import preprocessing 
+from sklearn.preprocessing import StandardScaler 
+from sklearn.metrics import accuracy_score
+
+df = pd.read_csv('diabetes.csv')
+
+df.shape
+
+df.head()
+
+df.info()
+
+df.isnull().values.any()
+
+X = df.drop('Outcome',axis=1)
+y = df['Outcome']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1) 
+
+print('X training data size: {}'.format(X_train.shape))
+print('y training data size: {}'.format(y_train.shape))
+print('X testing data size: {}'.format(X_test.shape))
+print('y testing data size: {}'.format(y_test.shape))
+print("{0:0.2f}% of data is in training set".format((len(X_train)/len(df.index)) * 100))
+print("{0:0.2f}% of data is in test set".format((len(X_test)/len(df.index)) * 100))
+
+numberList = list(range(1,20))
+neighbors = list(filter(lambda x: x % 2 != 0 , numberList))
+
+ac_scores = []
+
+for k in neighbors:
+ knn = KNeighborsClassifier(n_neighbors=k)
+ knn.fit(X_train, y_train.values.ravel())
+ y_pred = knn.predict(X_test)
+ #evaluate accuracy
+ scores = accuracy_score(y_test, y_pred)
+ ac_scores.append(scores) 
+
+MSE = [1 - x for x in ac_scores] 
+
+optimal_k = neighbors[MSE.index(min(MSE))]
+
+print('Odd Neighbors : 
+', neighbors)
+print('
+Accuracy Score : 
+', ac_scores)
+print('
+Misclassification error :
+', MSE)
+print("
+The optimal number of neighbor is k=",optimal_k)
+
+plt.plot(neighbors, MSE)
+plt.xlabel('Number of Neighbors K')
+plt.ylabel('Misclassification Error')
+plt.show()
+
+knn_model = KNeighborsClassifier(n_neighbors=optimal_k , weights = 'uniform', metric='euclidean')
+knn_model.fit(X_train, y_train)
+knn_pred = knn_model.predict(X_test)
+
+
+cm=metrics.confusion_matrix(y_test, knn_pred, labels=[1, 0])
+df_cm = pd.DataFrame(cm, index = [i for i in ["Actual 1","Actual 0"]],
+ columns = [i for i in ["Predict 1","Predict 0"]])
+plt.title('KNN Confusion Matrix')
+sns.heatmap(df_cm, annot=True, fmt='g');
+TP = cm[0,0]
+FP = cm[0,1]
+FN = cm[1,0]
+TN = cm[1,1]
+classification_accuracy = (TP + TN) / float(TP + TN + FP + FN)
+print('Classification accuracy: {0:0.4f}'.format(classification_accuracy))
+
+
+10. 
+
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+
+df  = pd.read_csv('fertility.csv')
+
+df.shape 
+
+df.head()
+
+df.info()
+
+df.isnull().values.any()
+
+X = df.drop('output',axis=1)
+y = df['output']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)    
+print('X training data size: {}'.format(X_train.shape))
+print('y training data size: {}'.format(y_train.shape))
+print('X testing data size:  {}'.format(X_test.shape))
+print('y testing data size:  {}'.format(y_test.shape))
+print("{0:0.2f}% of data is in training set".format((len(X_train)/len(df.index)) * 100))
+print("{0:0.2f}% of data is in test set".format((len(X_test)/len(df.index)) * 100))
+
+dTree = DecisionTreeClassifier(criterion = 'gini', random_state=1)
+dTree.fit(X_train, y_train)
+print('Test score:', dTree.score(X_test, y_test))
+
+from sklearn.tree import plot_tree
+fn = list(X_train)
+cn = ['N', 'O']
+fig, axes = plt.subplots(nrows = 1,ncols = 1,figsize = (4, 4), dpi=300)
+plot_tree(dTree, feature_names = fn, class_names=cn, filled=True)
+fig.savefig('tree.png')
+
+fi=pd.DataFrame({'Feature': X_train.columns, 'Importance': dTree.feature_importances_})
+fi.sort_values(by='Importance',ascending=False,ignore_index=True)
+
+X_train_new = X_train.drop(columns=['sitting', 'surgical-intervention', 'childish-disease', 'fevers'], axis=1)
+X_test_new = X_test.drop(columns=['sitting', 'surgical-intervention', 'childish-disease', 'fevers'], axis=1)
+
+X_train_new
+
+X_test_new
+
+dTree = DecisionTreeClassifier(criterion = 'gini',  random_state=1)
+dTree.fit(X_train_new, y_train)
+print('Test score:', dTree.score(X_test_new, y_test))
+    
